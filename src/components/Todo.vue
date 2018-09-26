@@ -164,6 +164,8 @@ export default {
   margin-right: 10px;
 }
 .bottom-bar{
+  border-top: 1px solid lightgrey;
+  padding-top: 14px;
   color: gray;
   display: flex;
   justify-content: space-between;
