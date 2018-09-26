@@ -2,7 +2,7 @@
   <div>
     <input type = "text" class = "input" placeholder = "What next?"
     v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="(item, i) in todos" :key = "item.id" class = "item">
+    <div v-for="(item, i) in todos" :key = "i" class = "item">
       <div class = "item-left" @dblclick="editTodo(item)">
       <input type = "checkbox" class = "checkbox" v-model ="item.completed">
       <div v-if="!item.editing" class="item-label"
@@ -30,14 +30,14 @@ export default {
   name: 'todo-list',
   data() {
     return {
-      todoId: 3,
+
       newTodo: '',
       editCache: '',
       todos: [{
-        id: 1, title: 'Mine poodi', completed: false, editing: false,
+        title: 'Mine poodi', completed: false, editing: false,
       },
       {
-        id: 2, title: 'Osta kartuleid', completed: false, editing: false,
+        title: 'Osta kartuleid', completed: false, editing: false,
       },
       ],
     };
@@ -68,19 +68,18 @@ export default {
         return;
       }
       this.todos.push({
-        id: this.todoId,
+
         title: this.newTodo,
         completed: false,
         editing: false,
       });
       this.newTodo = '';
-      this.todoId += 1;
     },
     removeTodo(i) {
       this.todos.splice(i, 1);
     },
     editTodo(item) {
-      this.editCache = item.title;
+      this.editCache = item.title; // eslint-disable-line no-param-reassign
       item.editing = true; // eslint-disable-line no-param-reassign
     },
     doneEditing(item) {
@@ -100,6 +99,19 @@ export default {
     },
     clearCompleted() {
       this.todos = this.todos.filter(el => !el.completed);
+    },
+  },
+  mounted() {
+    if (localStorage.todos) {
+      this.todos = JSON.parse(localStorage.todos);
+    }
+  },
+  watch: {
+    todos: {
+      handler() {
+        localStorage.todos = JSON.stringify(this.todos);
+      },
+
     },
   },
 };
