@@ -139,17 +139,16 @@ export default {
   width: 100%;
   margin-bottom: 12px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   background: rgb(236, 236, 236);
   padding: 10px 18px;
   border-radius: 5px;
   word-break: break-all;
+
 }
 .item-left {
   width: 100%;
   display: flex;
-  align-items: center;
 }
 .item-edit {
   width: 100%;
@@ -161,6 +160,7 @@ export default {
 }
 
 .close {
+
   cursor: pointer;
   user-select: none;
   color: gray;
