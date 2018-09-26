@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <img alt="DoDo logo" src="./assets/logo.png">
+    <img alt="ToDo logo" src="./assets/logo.png">
     <Todo/>
   </div>
 

@@ -15,6 +15,13 @@
     </div>
       <div class = "close" @click="removeTodo(i)">&#10006;</div>
     </div>
+    <div class = "bottom-bar" v-if="todos.length">
+      <div><input type ="checkbox" :checked="noneRemaining"
+      @change="checkAll($event)">Check All</div>
+      <button v-if="showClearCompleted" class = "clear-completed"
+      @click="clearCompleted()">Clear Completed</button>
+      <div>{{remaining}} items left</div>
+      </div>
   </div>
 </template>
 
@@ -34,6 +41,19 @@ export default {
       },
       ],
     };
+  },
+  computed: {
+    remaining() {
+      return this.todos.filter(item => !item.completed).length;
+    },
+    noneRemaining() {
+      return this.todos.filter(item => !item.completed).length === 0;
+    },
+    showClearCompleted() {
+      return this.todos.filter(item => item.completed).length;
+    },
+
+
   },
   directives: {
     focus: {
@@ -72,6 +92,14 @@ export default {
     cancelEditing(item) {
       item.title = this.editCache; // eslint-disable-line no-param-reassign
       item.editing = false; // eslint-disable-line no-param-reassign
+    },
+    checkAll(evt) {
+      this.todos.forEach((item) => {
+        item.completed = evt.target.checked; // eslint-disable-line no-param-reassign
+      });
+    },
+    clearCompleted() {
+      this.todos = this.todos.filter(el => !el.completed);
     },
   },
 };
@@ -135,6 +163,10 @@ export default {
 .checkbox {
   margin-right: 10px;
 }
-
+.bottom-bar{
+  color: gray;
+  display: flex;
+  justify-content: space-between;
+}
 
 </style>
