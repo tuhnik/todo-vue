@@ -4,9 +4,13 @@
     v-model="newTodo" @keyup.enter="addTodo">
     <div v-for="(item, i) in todos" :key = "item.id" class = "item">
       <div class = "item-left" @dblclick="editTodo(item)">
-      <div v-if="!item.editing" class="item-label">{{item.title}}</div>
+      <input type = "checkbox" class = "checkbox" v-model ="item.completed">
+      <div v-if="!item.editing" class="item-label"
+      :class="{completed: item.completed}">{{item.title}}</div>
       <input v-else class= "item-edit" v-model="item.title" @blur="doneEditing(item)"
-      @keyup.enter="doneEditing(item)" type = "text"
+      @keyup.enter="doneEditing(item)"
+      @keyup.esc="cancelEditing(item)"
+       type = "text"
       v-focus>
     </div>
       <div class = "close" @click="removeTodo(i)">&#10006;</div>
@@ -21,6 +25,7 @@ export default {
     return {
       todoId: 3,
       newTodo: '',
+      editCache: '',
       todos: [{
         id: 1, title: 'Mine poodi', completed: false, editing: false,
       },
@@ -55,9 +60,17 @@ export default {
       this.todos.splice(i, 1);
     },
     editTodo(item) {
+      this.editCache = item.title;
       item.editing = true; // eslint-disable-line no-param-reassign
     },
     doneEditing(item) {
+      if (!item.title.trim()) {
+        return;
+      }
+      item.editing = false; // eslint-disable-line no-param-reassign
+    },
+    cancelEditing(item) {
+      item.title = this.editCache; // eslint-disable-line no-param-reassign
       item.editing = false; // eslint-disable-line no-param-reassign
     },
   },
@@ -93,6 +106,8 @@ export default {
 }
 .item-left {
   width: 100%;
+  display: flex;
+  align-items: center;
 }
 .item-edit {
   width: 100%;
@@ -110,6 +125,15 @@ export default {
   &:hover{
     color: black;
     }
+}
+
+.completed {
+  color: gray;
+  text-decoration: line-through;
+}
+
+.checkbox {
+  margin-right: 10px;
 }
 
 
