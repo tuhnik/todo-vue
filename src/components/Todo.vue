@@ -16,7 +16,7 @@
       <div class = "close" @click="removeTodo(i)">&#10006;</div>
     </div>
     <div class = "bottom-bar" v-if="todos.length">
-      <div><input type ="checkbox" :checked="noneRemaining"
+      <div><input class = "checkbox" type ="checkbox" :checked="noneRemaining"
       @change="checkAll($event)">Check All</div>
       <button v-if="showClearCompleted" class = "clear-completed"
       @click="clearCompleted()">Clear Completed</button>
@@ -164,8 +164,9 @@ export default {
   margin-right: 10px;
 }
 .bottom-bar{
-  border-top: 1px solid lightgrey;
-  padding-top: 14px;
+  margin-bottom: 12px;
+  border-top: 1px solid rgb(223, 221, 221);
+  padding: 10px 18px;
   color: gray;
   display: flex;
   justify-content: space-between;
