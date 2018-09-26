@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <img alt="ToDo logo" src="./assets/logo.png">
+    <img alt="ToDo logo" src="./assets/logo.png" height="200px">
     <Todo/>
   </div>
 
@@ -22,8 +22,14 @@ export default {
   box-sizing: border-box;
 }
 .container {
-  width: 50%;
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  margin: auto;
+  align-items: center;
   font-family: Helvetica;
 }
-
+.container > div {
+  width: 100%
+}
 </style>

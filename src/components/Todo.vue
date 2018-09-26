@@ -111,6 +111,7 @@ export default {
       handler() {
         localStorage.todos = JSON.stringify(this.todos);
       },
+      deep: true,
 
     },
   },
@@ -143,6 +144,7 @@ export default {
   background: rgb(236, 236, 236);
   padding: 10px 18px;
   border-radius: 5px;
+  word-break: break-all;
 }
 .item-left {
   width: 100%;
