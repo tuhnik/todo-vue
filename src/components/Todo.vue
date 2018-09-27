@@ -5,8 +5,8 @@
     <div class = "top-bar" v-if="todos.length">
         <button :class="{ active: filter === 'all' }" @click="filter = 'all'">All</button>
         <button :class="{ active: filter === 'active' }" @click="filter = 'active'">Active</button>
-        <button :class="{ active: filter === 'completed' }"
-        @click="filter = 'completed'">Completed</button>
+        <button :class="{ active: filter === 'done' }"
+        @click="filter = 'done'">Done</button>
     </div>
     <div class = "empty" v-if="!todosFiltered.length && todos.length">Nothing here...</div>
     <div v-for="(item, i) in todosFiltered" :key = "i" class = "item">
@@ -52,8 +52,8 @@ export default {
   computed: {
     remaining() {
       const remains = this.todos.filter(item => !item.completed).length;
-      if (remains === 1) return 'last item remaining';
-      return (remains) ? `${remains} item remaining` : 'all done';
+      if (remains === 1) return 'Last item remaining!';
+      return (remains) ? `${remains} items remaining` : 'All done!';
     },
     noneRemaining() {
       return this.todos.filter(item => !item.completed).length === 0;
@@ -66,7 +66,7 @@ export default {
         return this.todos;
       } else if (this.filter === 'active') {
         return this.todos.filter(todo => !todo.completed);
-      } else if (this.filter === 'completed') {
+      } else if (this.filter === 'done') {
         return this.todos.filter(todo => todo.completed);
       }
       return this.todos;
@@ -195,6 +195,10 @@ export default {
   text-decoration: line-through;
 }
 
+.clear-completed {
+  z-index: 100;
+  display: block;
+}
 .checkbox {
   margin-right: 10px;
   align-self: top;
