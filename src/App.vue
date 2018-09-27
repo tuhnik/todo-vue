@@ -28,6 +28,7 @@ export default {
   margin: auto;
   align-items: center;
   font-family: Helvetica;
+  font-size: 16px;
 }
 .container > div {
   width: 100%

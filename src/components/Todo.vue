@@ -20,8 +20,8 @@
       @change="checkAll($event)">Check All</div>
       <button v-if="showClearCompleted" class = "clear-completed"
       @click="clearCompleted()">Clear Completed</button>
-      <div>{{remaining}} items left</div>
-      </div>
+      <div>{{remaining}}</div>
+    </div>
   </div>
 </template>
 
@@ -44,7 +44,8 @@ export default {
   },
   computed: {
     remaining() {
-      return this.todos.filter(item => !item.completed).length;
+      const remains = this.todos.filter(item => !item.completed).length;
+      return (remains) ? `${remains} item(s) remaining` : 'all done';
     },
     noneRemaining() {
       return this.todos.filter(item => !item.completed).length === 0;
@@ -136,6 +137,7 @@ export default {
 }
 
 .item {
+  font-size: 16px;
   width: 100%;
   margin-bottom: 12px;
   display: flex;
@@ -150,6 +152,9 @@ export default {
   width: 100%;
   display: flex;
 }
+.item-label {
+  align-self: center;
+}
 .item-edit {
   width: 100%;
   font-size: 16px;
@@ -160,8 +165,8 @@ export default {
 }
 
 .close {
-
   cursor: pointer;
+  margin-left: 10px;
   user-select: none;
   color: gray;
   &:hover{
@@ -176,6 +181,7 @@ export default {
 
 .checkbox {
   margin-right: 10px;
+  align-self: top;
 }
 .bottom-bar{
   margin-bottom: 12px;
@@ -185,5 +191,6 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
 
 </style>
