@@ -8,6 +8,7 @@
         <button :class="{ active: filter === 'completed' }"
         @click="filter = 'completed'">Completed</button>
     </div>
+    <div class = "empty" v-if="!todosFiltered.length && todos.length">Nothing here...</div>
     <div v-for="(item, i) in todosFiltered" :key = "i" class = "item">
       <div class = "item-left" @dblclick="editTodo(item)">
       <input type = "checkbox" class = "checkbox" v-model ="item.completed">
@@ -23,9 +24,9 @@
     </div>
     <div class = "bottom-bar" v-if="todos.length">
       <div><input class = "checkbox" type ="checkbox" :checked="noneRemaining"
-      @change="checkAll($event)">Check All</div>
+      @change="checkAll($event)">Check all</div>
       <button v-if="showClearCompleted" class = "clear-completed"
-      @click="clearCompleted()">Clear Completed</button>
+      @click="clearCompleted()">Clear done</button>
       <div>{{remaining}}</div>
     </div>
   </div>
@@ -51,7 +52,8 @@ export default {
   computed: {
     remaining() {
       const remains = this.todos.filter(item => !item.completed).length;
-      return (remains) ? `${remains} item(s) remaining` : 'all done';
+      if (remains === 1) return 'last item remaining';
+      return (remains) ? `${remains} item remaining` : 'all done';
     },
     noneRemaining() {
       return this.todos.filter(item => !item.completed).length === 0;
@@ -119,7 +121,7 @@ export default {
     },
   },
   mounted() {
-    if (localStorage.todos) {
+    if (localStorage.todos && localStorage.todos.length > 2) {
       this.todos = JSON.parse(localStorage.todos);
     }
   },
@@ -176,7 +178,6 @@ export default {
   background: rgb(236, 236, 236);
   outline: none;
   border: none;
-
 }
 
 .close {
@@ -198,12 +199,23 @@ export default {
   margin-right: 10px;
   align-self: top;
 }
+
+.empty {
+  align-self: top;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 12px;
+  color: gray;
+
+}
+
 .bottom-bar{
   margin-bottom: 12px;
   border-top: 1px solid rgb(223, 221, 221);
   padding: 10px 18px;
   color: gray;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -216,7 +228,7 @@ export default {
   justify-content: center;
 }
 
-.top-bar > button {
+.top-bar > button,.bottom-bar > button{
   width: 120px;
   margin: 5px;
   border: none;
@@ -227,11 +239,14 @@ export default {
   padding: 5px;
   display: inline-block;
   font-size: 16px;
+  &:hover{
+    background-color: gray;
+    }
 }
+
 
 .active {
   background-color: rgb(101, 184, 199);
-  color: black;
 }
 
 </style>
