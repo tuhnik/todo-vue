@@ -33,4 +33,6 @@ export default {
 .container > div {
   width: 100%
 }
+
+
 </style>

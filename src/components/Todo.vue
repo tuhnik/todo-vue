@@ -2,7 +2,13 @@
   <div>
     <input type = "text" class = "input" placeholder = "What next?"
     v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="(item, i) in todos" :key = "i" class = "item">
+    <div class = "top-bar" v-if="todos.length">
+        <button :class="{ active: filter === 'all' }" @click="filter = 'all'">All</button>
+        <button :class="{ active: filter === 'active' }" @click="filter = 'active'">Active</button>
+        <button :class="{ active: filter === 'completed' }"
+        @click="filter = 'completed'">Completed</button>
+    </div>
+    <div v-for="(item, i) in todosFiltered" :key = "i" class = "item">
       <div class = "item-left" @dblclick="editTodo(item)">
       <input type = "checkbox" class = "checkbox" v-model ="item.completed">
       <div v-if="!item.editing" class="item-label"
@@ -30,7 +36,7 @@ export default {
   name: 'todo-list',
   data() {
     return {
-
+      filter: 'all',
       newTodo: '',
       editCache: '',
       todos: [{
@@ -52,6 +58,16 @@ export default {
     },
     showClearCompleted() {
       return this.todos.filter(item => item.completed).length;
+    },
+    todosFiltered() {
+      if (this.filter === 'all') {
+        return this.todos;
+      } else if (this.filter === 'active') {
+        return this.todos.filter(todo => !todo.completed);
+      } else if (this.filter === 'completed') {
+        return this.todos.filter(todo => todo.completed);
+      }
+      return this.todos;
     },
 
 
@@ -126,13 +142,12 @@ export default {
   width: 100%;
   padding: 10px 18px;
   font-size: 18px;
-  margin-bottom: 16px;
   outline: none;
   border: 1px solid #bdc3c7;
   border-radius: 5px;
 
   &:focus{
-    border: 1px solid #3498db;
+    border: 1px solid rgb(101, 184, 199);
     }
 }
 
@@ -192,5 +207,31 @@ export default {
   justify-content: space-between;
 }
 
+.top-bar {
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgb(223, 221, 221);
+  padding: 10px 18px;
+  color: gray;
+  display: flex;
+  justify-content: center;
+}
+
+.top-bar > button {
+  width: 120px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  outline: none;
+  padding: 5px;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.active {
+  background-color: rgb(101, 184, 199);
+  color: black;
+}
 
 </style>
