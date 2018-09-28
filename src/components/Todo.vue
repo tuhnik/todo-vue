@@ -11,9 +11,9 @@
     <div class = "empty" v-if="!todosFiltered.length && todos.length">Nothing here...</div>
     <div v-for="(item, i) in todosFiltered" :key = "i" class = "item">
       <div class = "item-left" @dblclick="editTodo(item)">
-      <input type = "checkbox" class = "checkbox" v-model ="item.completed">
+      <input type = "checkbox" class = "checkbox" v-model ="item.done">
       <div v-if="!item.editing" class="item-label"
-      :class="{completed: item.completed}">{{item.title}}</div>
+      :class="{done: item.done}">{{item.title}}</div>
       <input v-else class= "item-edit" v-model="item.title" @blur="doneEditing(item)"
       @keyup.enter="doneEditing(item)"
       @keyup.esc="cancelEditing(item)"
@@ -25,8 +25,10 @@
     <div class = "bottom-bar" v-if="todos.length">
       <div><input class = "checkbox" type ="checkbox" :checked="noneRemaining"
       @change="checkAll($event)">Check all</div>
-      <button v-if="showClearCompleted" class = "clear-completed"
-      @click="clearCompleted()">Clear done</button>
+      <div>
+      <button v-if="showDone" class = "clear-done"
+      @click="clearDone()">Clear done</button>
+      </div>
       <div>{{remaining}}</div>
     </div>
   </div>
@@ -40,34 +42,28 @@ export default {
       filter: 'all',
       newTodo: '',
       editCache: '',
-      todos: [{
-        title: 'Mine poodi', completed: false, editing: false,
-      },
-      {
-        title: 'Osta kartuleid', completed: false, editing: false,
-      },
-      ],
+      todos: [],
     };
   },
   computed: {
     remaining() {
-      const remains = this.todos.filter(item => !item.completed).length;
+      const remains = this.todos.filter(item => !item.done).length;
       if (remains === 1) return 'Last item remaining!';
       return (remains) ? `${remains} items remaining` : 'All done!';
     },
     noneRemaining() {
-      return this.todos.filter(item => !item.completed).length === 0;
+      return this.todos.filter(item => !item.done).length === 0;
     },
-    showClearCompleted() {
-      return this.todos.filter(item => item.completed).length;
+    showDone() {
+      return this.todos.filter(item => item.done).length;
     },
     todosFiltered() {
       if (this.filter === 'all') {
         return this.todos;
       } else if (this.filter === 'active') {
-        return this.todos.filter(todo => !todo.completed);
+        return this.todos.filter(todo => !todo.done);
       } else if (this.filter === 'done') {
-        return this.todos.filter(todo => todo.completed);
+        return this.todos.filter(todo => todo.done);
       }
       return this.todos;
     },
@@ -89,7 +85,7 @@ export default {
       this.todos.push({
 
         title: this.newTodo,
-        completed: false,
+        done: false,
         editing: false,
       });
       this.newTodo = '';
@@ -113,11 +109,11 @@ export default {
     },
     checkAll(evt) {
       this.todos.forEach((item) => {
-        item.completed = evt.target.checked; // eslint-disable-line no-param-reassign
+        item.done = evt.target.checked; // eslint-disable-line no-param-reassign
       });
     },
-    clearCompleted() {
-      this.todos = this.todos.filter(el => !el.completed);
+    clearDone() {
+      this.todos = this.todos.filter(el => !el.done);
     },
   },
   mounted() {
@@ -190,7 +186,7 @@ export default {
     }
 }
 
-.completed {
+.done {
   color: gray;
   text-decoration: line-through;
 }
@@ -218,11 +214,13 @@ export default {
   align-items: center;
 
 }
-.bottom-bar > * {
+.bottom-bar > div {
 flex: 1;
 }
-
 .bottom-bar div:nth-of-type(2){
+  text-align: center;
+}
+.bottom-bar div:nth-of-type(3){
   text-align: right;
 }
 
@@ -236,7 +234,7 @@ flex: 1;
   justify-content: center;
 }
 
-.top-bar > button,.bottom-bar > button{
+.top-bar > button{
   width: 100px;
   margin: 5px;
   border: none;
@@ -250,7 +248,18 @@ flex: 1;
     background-color: gray;
     }
 }
-button.clear-completed{
+
+.bottom-bar > div > button {
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  color: white;
+  &:hover{
+    background-color: gray;
+    }
+}
+
+button.clear-done{
   width: 100px;
 }
 
