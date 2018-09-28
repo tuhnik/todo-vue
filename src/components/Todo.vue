@@ -195,10 +195,6 @@ export default {
   text-decoration: line-through;
 }
 
-.clear-completed {
-  z-index: 100;
-  display: block;
-}
 .checkbox {
   margin-right: 10px;
   align-self: top;
@@ -220,8 +216,16 @@ export default {
   color: gray;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+
 }
+.bottom-bar > * {
+flex: 1;
+}
+
+.bottom-bar div:nth-of-type(2){
+  text-align: right;
+}
+
 
 .top-bar {
   margin-bottom: 12px;
@@ -233,7 +237,7 @@ export default {
 }
 
 .top-bar > button,.bottom-bar > button{
-  width: 120px;
+  width: 100px;
   margin: 5px;
   border: none;
   border-radius: 5px;
@@ -241,11 +245,13 @@ export default {
   text-align: center;
   outline: none;
   padding: 5px;
-  display: inline-block;
   font-size: 16px;
   &:hover{
     background-color: gray;
     }
+}
+button.clear-completed{
+  width: 100px;
 }
 
 
